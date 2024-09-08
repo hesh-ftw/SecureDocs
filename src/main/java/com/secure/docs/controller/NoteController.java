@@ -45,7 +45,7 @@ public class NoteController {
                           @AuthenticationPrincipal UserDetails userDetails){
 
         String username= userDetails.getUsername();
-        return noteService.updateNoteForUsers(noteId,content,username);
+        return noteService.updateNoteForUsers(noteId,username,content);
     }
 
 

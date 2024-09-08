@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "secure-docs")
+@Table(name = "notes")
 @Data
 public class Note {
     @Id

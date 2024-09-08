@@ -12,7 +12,7 @@ import java.util.List;
 public class NoteService {
     private final NoteRepository noteRepository;
 
-    public Note createNoteForUsers(String username, String content){
+    public Note createNoteForUsers(String content, String username){
             Note note = new Note();
             note.setContent(content);
             note.setOwnerUsername(username);
