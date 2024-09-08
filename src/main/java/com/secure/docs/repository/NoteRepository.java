@@ -6,6 +6,5 @@ import java.util.List;
 
 
 public interface NoteRepository extends JpaRepository<Note,Long> {
-
-    List<Note> findByUserOwnerUserName(String ownerUsername);
+    List<Note> findByOwnerUsername(String username);
 }

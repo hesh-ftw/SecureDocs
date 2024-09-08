@@ -32,7 +32,7 @@ public class NoteService {
     }
 
     public List<Note> getNotesForUser(String username){
-        List<Note> personalNotes= noteRepository.findByUserOwnerUserName(username);
+        List<Note> personalNotes= noteRepository.findByOwnerUsername(username);
         return personalNotes;
     }
 
