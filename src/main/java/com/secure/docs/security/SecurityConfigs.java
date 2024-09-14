@@ -47,25 +47,25 @@ public class SecurityConfigs {
 //        }
 //        return manager;
 //    }
-    @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource){
-        JdbcUserDetailsManager manager= new JdbcUserDetailsManager(dataSource);
-        if (!manager.userExists("user1")){
-            manager.createUser(
-                    User.withUsername("user1")
-                            .password("{noop}password")
-                            .roles("USER")
-                            .build()
-            );
-        }
-        if (!manager.userExists("admin1")){
-            manager.createUser(
-                    User.withUsername("admin1")
-                            .password("{noop}password")
-                            .roles("ADMIN")
-                            .build()
-            );
-        }
-    return manager;
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(DataSource dataSource){
+//        JdbcUserDetailsManager manager= new JdbcUserDetailsManager(dataSource);
+//        if (!manager.userExists("user1")){
+//            manager.createUser(
+//                    User.withUsername("user1")
+//                            .password("{noop}password")
+//                            .roles("USER")
+//                            .build()
+//            );
+//        }
+//        if (!manager.userExists("admin1")){
+//            manager.createUser(
+//                    User.withUsername("admin1")
+//                            .password("{noop}password")
+//                            .roles("ADMIN")
+//                            .build()
+//            );
+//        }
+//    return manager;
+//    }
 }
