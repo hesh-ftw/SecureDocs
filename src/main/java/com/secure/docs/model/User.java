@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = "users",
             uniqueConstraints={
                     @UniqueConstraint(columnNames = "username"),
@@ -55,7 +56,7 @@ public class User {
     private boolean isTwoFactorEnabled = false;
     private String signUpMethod;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     @JsonBackReference
     @ToString.Exclude
@@ -67,6 +68,12 @@ public class User {
 
     @UpdateTimestamp
     private LocalDateTime updatedDate;
+
+    public User(String userName, String email, String password) {
+        this.userName=userName;
+        this.email=email;
+        this.password=password;
+    }
 
     @Override
     public boolean equals(Object o) {
