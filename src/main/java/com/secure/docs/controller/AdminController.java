@@ -1,17 +1,11 @@
 package com.secure.docs.controller;
 
-import com.secure.docs.dto.UserDTO;
-
 import com.secure.docs.model.User;
-
 import com.secure.docs.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.List;
 
 @RestController
@@ -33,15 +27,11 @@ public class AdminController {
         return ResponseEntity.ok("User role updated");
     }
 
-//    @GetMapping("/user/{id}")
-//    public User getaUserById(@PathVariable Long id){
-//       return userService.getaUserById(id);
-//    }
 
-    //find user by id
+    //    //find user by id
     @GetMapping("/user/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable Long id){
-        return new ResponseEntity<>(userService.getUserById(id),HttpStatus.OK);
+    public ResponseEntity<User> getaUserById(@PathVariable Long id){
+        return new ResponseEntity<>(userService.getaUserById(id),HttpStatus.OK);
     }
 
 
