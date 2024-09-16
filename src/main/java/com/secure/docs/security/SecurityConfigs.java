@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,7 +29,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
+
+@EnableMethodSecurity(              //for method level security restrictions
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true
+)
 public class SecurityConfigs {
+
     //defines all the request need to be authenticated  (class SpringBootWebSecurityConfiguration)
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -79,6 +87,8 @@ public class SecurityConfigs {
 //    return manager;
 //    }
 
+
+    //add custom users to db for testing
     @Bean
     public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository) {
         return args -> {

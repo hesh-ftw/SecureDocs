@@ -5,6 +5,7 @@ import com.secure.docs.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -14,13 +15,16 @@ import java.util.List;
 public class AdminController {
     private final UserService userService;
 
+
     //get all users
+    @PreAuthorize("hasRole('ROLE_ADMIN')") //only the users with ADMIN_ROLE can access this end point
     @GetMapping("/getusers")
     public ResponseEntity<List<User>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(),HttpStatus.OK);
     }
 
     //change user role
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/update-role")
     public ResponseEntity<String> updateUserRole(@RequestParam Long userId, @RequestParam String roleName){
         userService.updateUserRole(userId,roleName);
