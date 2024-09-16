@@ -20,8 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "users",
             uniqueConstraints={
-                    @UniqueConstraint(columnNames = "username"),
-                    @UniqueConstraint(columnNames = "password")
+                    @UniqueConstraint(columnNames = "username")
             })
 
 public class User {
