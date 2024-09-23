@@ -23,6 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+
 import javax.sql.DataSource;
 import java.time.LocalDate;
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -41,13 +43,15 @@ public class SecurityConfigs {
     //defines all the request need to be authenticated  (class SpringBootWebSecurityConfiguration)
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf-> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+        // http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("api/admin/**").hasRole("ADMIN")
+                .requestMatchers("api/csrf-token").permitAll()
                 .anyRequest().authenticated());
 
         http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
-        http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
