@@ -20,7 +20,7 @@ public class JwtUtils {
     @Value("${spring.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("{spring.app.jwtExpirationMs}")
+    @Value("${spring.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
     // get the JWT token form the http request header
