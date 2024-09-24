@@ -5,11 +5,16 @@ import com.secure.docs.model.Role;
 import com.secure.docs.model.User;
 import com.secure.docs.repository.RoleRepository;
 import com.secure.docs.repository.UserRepository;
+import com.secure.docs.security.jwt.AuthEntryPointJwt;
+import com.secure.docs.security.jwt.AuthTokenFilter;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.sql.DataSource;
@@ -39,20 +45,43 @@ import static org.springframework.security.config.Customizer.withDefaults;
         jsr250Enabled = true
 )
 public class SecurityConfigs {
+    @Autowired
+    private AuthEntryPointJwt unauthorizedHandler;
+
+    @Bean
+    public AuthTokenFilter authenticationJwtTokenFiler(){
+        return new AuthTokenFilter();
+    }
 
     //defines all the request need to be authenticated  (class SpringBootWebSecurityConfiguration)
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf-> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+        http.csrf(csrf-> csrf.csrfTokenRepository(CookieCsrfTokenRepository
+                        .withHttpOnlyFalse())
+                        .ignoringRequestMatchers("api/auth/public/**"));
+
         // http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("api/admin/**").hasRole("ADMIN")
                 .requestMatchers("api/csrf-token").permitAll()
+                .requestMatchers("api/auth/public/**").permitAll()
+
                 .anyRequest().authenticated());
+
+        http.exceptionHandling(exception ->
+                exception.authenticationEntryPoint(unauthorizedHandler));
+        http.addFilterBefore(authenticationJwtTokenFiler(),
+                UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager
+            (AuthenticationConfiguration authenticationConfiguration) throws Exception{
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
 
