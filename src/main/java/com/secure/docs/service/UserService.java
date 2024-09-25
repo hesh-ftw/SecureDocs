@@ -6,6 +6,7 @@ import com.secure.docs.model.User;
 import com.secure.docs.repository.RoleRepository;
 import com.secure.docs.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -35,6 +36,13 @@ public class UserService {
        var user= userRepository.findById(id)
                .orElseThrow(()->new RuntimeException("User not found"));
        return user;
+    }
+
+
+    public User findByUsername(String username) {
+        var user = userRepository.findByUserName(username)
+                .orElseThrow(()-> new RuntimeException("User not found"));
+        return user;
     }
 
 //    public UserDTO getUserById(Long id) {
