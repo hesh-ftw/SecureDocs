@@ -1,4 +1,4 @@
-package com.secure.docs.security.login;
+package com.secure.docs.security.response;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
