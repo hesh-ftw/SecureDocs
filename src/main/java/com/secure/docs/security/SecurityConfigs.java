@@ -70,8 +70,11 @@ public class SecurityConfigs {
                 .requestMatchers("api/admin/**").hasRole("ADMIN")
                 .requestMatchers("api/csrf-token").permitAll()
                 .requestMatchers("api/auth/public/**").permitAll()
+                .requestMatchers("/oauth2/**").permitAll()
+                .anyRequest().authenticated())
+                .oauth2Login(oauth->{
 
-                .anyRequest().authenticated());
+                });
 
         http.exceptionHandling(exception ->
                 exception.authenticationEntryPoint(unauthorizedHandler));
