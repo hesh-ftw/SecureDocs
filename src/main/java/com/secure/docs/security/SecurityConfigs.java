@@ -1,5 +1,6 @@
 package com.secure.docs.security;
 
+import com.secure.docs.configs.OAuth2LoginSuccessHandler;
 import com.secure.docs.model.AppRole;
 import com.secure.docs.model.Role;
 import com.secure.docs.model.User;
@@ -12,21 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -34,7 +28,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -50,6 +43,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
         jsr250Enabled = true
 )
 public class SecurityConfigs {
+
+    @Autowired
+    @Lazy
+    OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
@@ -72,8 +70,8 @@ public class SecurityConfigs {
                 .requestMatchers("api/auth/public/**").permitAll()
                 .requestMatchers("/oauth2/**").permitAll()
                 .anyRequest().authenticated())
-                .oauth2Login(oauth->{
-
+                .oauth2Login(oauth2->{
+                    oauth2.successHandler(oAuth2LoginSuccessHandler);
                 });
 
         http.exceptionHandling(exception ->
@@ -153,10 +151,7 @@ public class SecurityConfigs {
 //    }
 
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+
 
 
     //add custom users to db for testing

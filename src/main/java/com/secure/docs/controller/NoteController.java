@@ -1,9 +1,11 @@
 package com.secure.docs.controller;
 
 import com.secure.docs.model.Note;
+import com.secure.docs.service.AuditLogService;
 import com.secure.docs.service.NoteService;
 import lombok.AllArgsConstructor;
 import org.aspectj.weaver.ast.Not;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
