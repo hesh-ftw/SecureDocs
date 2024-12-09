@@ -2,7 +2,8 @@
 # Secure Docs
 
 SecureDocs is a well secured document management system designed to protect sensitive information and provide robust authentication and authorization mechanisms using Spring Boot and React. The system ensures secure data handling and easy scalability.
-(this repository contains the backend of the SecureDocs applciation)
+(this repository contains the backend of the SecureDocs applciation. 
+ refer to frontend repo form here- https://github.com/hesh-ftw/SecureDocs-frontend )
 
 ## Features
 - **User Authentication:** Secure login system using Spring Security.
